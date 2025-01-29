@@ -1,0 +1,13 @@
+; Checks wether both numbers are equal.
+
+read
+read
+sub
+jmpz equals
+print "NOT EQUAL"
+halt
+
+def equals
+  print "IS EQUAL"
+  halt
+end
