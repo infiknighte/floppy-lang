@@ -10,7 +10,6 @@ typedef struct {
 } Iter;
 
 Iter iterNew(void *src, size_t size, size_t len);
-void iterFree(Iter *const restrict iter);
 bool iterNotEnd(const Iter iter);
 void *iterPeek(const Iter iter);
 void *iterAdvance(Iter *const restrict iter);

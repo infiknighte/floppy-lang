@@ -12,6 +12,5 @@ typedef struct {
 } Lexer;
 
 Lexer lexerNew(const uint8_t *const src, size_t len);
-void lexerFree(Lexer *const restrict lex);
 Token getToken(Lexer *const lex);
 Vec tokenize(Lexer *const lex);

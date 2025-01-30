@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 
+
 static bool isBlank(const Lexer lex) {
   switch (*(uint8_t *)iterPeek(lex.iter)) {
   case ' ':
@@ -22,11 +23,6 @@ static bool isBlank(const Lexer lex) {
 Lexer lexerNew(const uint8_t *const src, size_t len) {
   return (Lexer){.iter = iterNew((void *)src, sizeof(uint8_t), len),
                  .hadError = false};
-}
-
-void lexerFree(Lexer *const restrict lex) {
-  iterFree(&lex->iter);
-  lex->hadError = false;
 }
 
 Token getToken(Lexer *const lex) {
