@@ -48,6 +48,7 @@ void stackEval(Stack *const stack) {
   case TokenTypePut:
     token = stackNext(stack);
     stackPut(stack, valueNew((ValueType)token.type, token.value, token.len));
+    stackNext(stack);
     break;
   case TokenTypePop:
     stackNext(stack);
@@ -96,6 +97,7 @@ void stackEval(Stack *const stack) {
     default:
       break;
     }
+    break;
   }
   case TokenTypeSub: {
     stackNext(stack);
@@ -156,8 +158,7 @@ void stackEval(Stack *const stack) {
     case TokenTypeEOF:
       stackNext(stack);
       Value value = stackPop(stack);
-      printf("%d - %zu\n", value.type, value.len);
-      printf("%s\n\n", value.ptr);
+      printf("%s\n", value.ptr);
       valueFree(&value);
       break;
     default:
@@ -175,10 +176,8 @@ void stackEval(Stack *const stack) {
   case TokenTypeString:
   case TokenTypeIdent:
   case TokenTypeEOL:
-  case TokenTypeUnknown:
-    stackNext(stack);
-    break;
   case TokenTypeEOF:
+  case TokenTypeUnknown:
     stackNext(stack);
     break;
   }
