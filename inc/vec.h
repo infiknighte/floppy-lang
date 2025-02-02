@@ -1,9 +1,8 @@
 #pragma once
 
-#include <assert.h>
 #include <stdlib.h>
 
-#define VEC_INIT_CAPACITY 8
+#define VEC_INIT_CAPACITY ((size_t)8)
 
 #define VecOf(type) vecNew(sizeof(type))
 
@@ -17,15 +16,16 @@
 
 #define VecForEach(vec, type, item, codeBlock)                                 \
   ({                                                                           \
-    if ((vec).len > 0)                                                         \
+    if ((vec).len > 0) {                                                       \
       for (size_t item##Index = 0; item##Index < (vec).len; ++item##Index) {   \
-        type *item = vecGet(vec, item##Index);                                 \
+        type *item = vecGetBorrow(vec, item##Index);                           \
         codeBlock                                                              \
       }                                                                        \
+    }                                                                          \
   })
 
 typedef struct {
-  void *ptr;
+  void *ptr; // Owned
   size_t size;
   size_t len;
   size_t cap;
@@ -34,8 +34,8 @@ typedef struct {
 Vec vecNew(size_t size);
 Vec vecNewWith(size_t size, size_t capacity);
 Vec *vecRealloc(Vec *vec, const size_t newCap);
-void *vecGet(const Vec vec, size_t index);
-void *vecGetCopy(const Vec vec, size_t index, void *restrict dest);
+void *vecGetBorrow(const Vec vec, size_t index);
+void *vecGetOwn(const Vec vec, size_t index, void *restrict dest);
 Vec *vecPush(Vec *const restrict vec, const void *restrict item);
 Vec *vecPop(Vec *const restrict vec);
 Vec *vecClear(Vec *const restrict vec);

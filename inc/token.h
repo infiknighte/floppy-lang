@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stdlib.h>
 
 #define KEYWORDS_NUMBER 19
 #define KEYWORDS_RVALUE                                                        \
@@ -54,9 +55,13 @@ typedef enum : uint8_t {
 typedef struct {
   TokenType type;
   uint8_t *value;
+  size_t len;
 } Token;
 
-Token tokenNew(TokenType type, uint8_t *value);
+Token tokenNew(TokenType type, uint8_t *value, size_t len);
+Token tokenNewOp(TokenType type);
 void tokenFree(Token *const token);
 bool tokenIsLiteral(const Token token);
+bool tokenIsSpecail(const Token token);
+bool tokenIsOp(const Token token);
 void tokenDebug(const Token token);

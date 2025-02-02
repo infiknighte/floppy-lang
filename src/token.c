@@ -4,16 +4,29 @@
 #include <stdlib.h>
 #include <string.h>
 
-Token tokenNew(TokenType type, uint8_t *value) {
+Token tokenNew(TokenType type, uint8_t *value, size_t len) {
   switch (type) {
   case TokenTypeInt:
   case TokenTypeFloat:
   case TokenTypeString:
   case TokenTypeIdent:
   case TokenTypeUnknown:
-    return (Token){.type = type, .value = value};
+    return (Token){.type = type, .value = value, .len = len};
   default:
-    return (Token){.type = type, .value = NULL};
+    return (Token){.type = type, .value = NULL, .len = 0};
+  }
+}
+
+Token tokenNewOp(TokenType op) {
+  switch (op) {
+  case TokenTypeInt:
+  case TokenTypeFloat:
+  case TokenTypeString:
+  case TokenTypeIdent:
+  case TokenTypeUnknown:
+    return tokenNew(TokenTypeUnknown, NULL, 0);
+  default:
+    return tokenNew(op, NULL, 0);
   }
 }
 
@@ -36,6 +49,22 @@ bool tokenIsLiteral(const Token token) {
     return false;
   }
 }
+
+bool tokenIsSpecail(const Token token) {
+  switch (token.type) {
+  case TokenTypeEOL:
+  case TokenTypeEOF:
+  case TokenTypeUnknown:
+    return true;
+  default:
+    return false;
+  }
+}
+
+bool tokenIsOp(const Token token) {
+  return !(tokenIsLiteral(token) && tokenIsSpecail(token));
+}
+
 
 void tokenDebug(const Token token) {
   printf("Token (Op %hhu) - ", token.type);

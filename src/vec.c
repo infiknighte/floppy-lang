@@ -3,7 +3,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#define vecNewCapacity(capacity) (size_t)(capacity ? ((capacity * 3) / 2) : 8)
+static inline size_t vecNewCapacity(size_t capacity) {
+  return (size_t)(capacity ? ((capacity * 3) / 2) : VEC_INIT_CAPACITY);
+}
 
 static inline bool inBounds(const Vec vec, size_t index) {
   return index >= 0 && index < vec.len;
@@ -34,12 +36,12 @@ Vec *vecRealloc(Vec *vec, const size_t newCap) {
   return vec;
 }
 
-void *vecGet(const Vec vec, size_t index) {
+void *vecGetBorrow(const Vec vec, size_t index) {
   return inBounds(vec, index) ? vecAt(vec, index) : NULL;
 }
 
-void *vecGetCopy(const Vec vec, size_t index, void *restrict dest) {
-  return inBounds(vec, index) ? memmove(dest, vecGet(vec, index), vec.size)
+void *vecGetOwn(const Vec vec, size_t index, void *restrict dest) {
+  return inBounds(vec, index) ? memcpy(dest, vecGetBorrow(vec, index), vec.size)
                               : NULL;
 }
 

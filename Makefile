@@ -1,6 +1,6 @@
 # Project Settings
 CC := clang
-CFLAGS := -Wall -Wextra -Iinc -std=c23 -g -O0 -fsanitize=address -fno-omit-frame-pointer 
+CFLAGS := -Iinc -Wall -Wextra -std=c23 -g -O0 -DDEBUG -fsanitize=address,undefined -fno-omit-frame-pointer
 SRC_DIR := src
 BIN_DIR := bin
 INC_DIR := inc

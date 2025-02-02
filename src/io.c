@@ -1,5 +1,6 @@
-
+#include "iter.h"
 #include "lexer.h"
+#include "stack.h"
 #include "token.h"
 #include "vec.h"
 #include <stdint.h>
@@ -42,10 +43,10 @@ static uint8_t *readFile(FILE *file, size_t *read) {
 static int eval(const uint8_t *const src, size_t len) {
   Lexer lex = lexerNew(src, len);
   Vec tokens = tokenize(&lex);
-  VecForEach(tokens, Token, token, {
-    tokenDebug(*token);
-    tokenFree(token);
-  });
+  Stack stack = stackNew(iterFrom(tokens.ptr, sizeof(Token), tokens.len));
+  stackRun(&stack);
+  stackFree(&stack);
+  VecForEach(tokens, Token, token, tokenFree(token););
   vecFree(&tokens);
   return EXIT_SUCCESS;
 }
@@ -82,5 +83,6 @@ int script(const char *const restrict filename) {
   uint8_t *buf = readFile(fptr, &len);
   int result = eval(buf, len);
   free(buf);
+  fclose(fptr);
   return result;
 }
