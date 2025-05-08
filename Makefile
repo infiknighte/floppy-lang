@@ -1,5 +1,5 @@
 # Project Settings
-CC := clang
+CC := gcc
 CFLAGS := -Wall -Wextra -Iinc -std=c23 -g -O0 -fsanitize=address -fno-omit-frame-pointer 
 SRC_DIR := src
 BIN_DIR := bin
